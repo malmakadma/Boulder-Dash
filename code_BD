@@ -1,14 +1,44 @@
+using System;
+
 abstract class Parents
 {
     abstract public void Draw();
 }
 class Player : Parents
 {
+//new
+    //set Player coordinates
+    private int x, y;
+    public Player(int x = 2, int y = 6)
+    {
+        this.x = x;
+        this.y = y;
+    }
+    public int X
+    {
+        get { return x; }
+        set { x = value; }
+    }
+    public int Y
+    {
+        get { return y;}
+        set { y = value; }
+    }
+    //метод переміщення Player, передаємо словник, у якому зберігається напрямок, змінюємо координати
+    public void Move(Parents[,] field, Dictionary<char, Coords> Coords_upd, char direction)
+    {
+        field[x, y] = new Empty(); //clear the cell after Player
+      
+        this.x = x + Coords_upd[direction].x;
+        this.y = y + Coords_upd[direction].y;
+    }
+   
     public override void Draw()
     {
         Console.Write('I');
     }
 }
+
 class Sand : Parents
 {
     public override void Draw()
@@ -37,11 +67,29 @@ class Dimond : Parents
         Console.Write('D');
     }
 }
+//new
+public struct Coords
+{
+    public int x, y;
+
+    public Coords(int x, int y)
+    {
+        this.x = x;
+        this.y = y;
+    }
+}
 
 class Program
 {
     static void Main(string[] args)
     {
+        //Dictionary with directions
+        Dictionary<char, Coords> updatedCoords = new Dictionary<char, Coords>();
+        updatedCoords.Add('u', new Coords(-1, 0));
+        updatedCoords.Add('d', new Coords(1, 0));
+        updatedCoords.Add('r', new Coords(0, 1));
+        updatedCoords.Add('l', new Coords(0, -1));
+        
         Parents[,] field = new Parents[5, 16];
 
         //filling with sand
@@ -68,26 +116,47 @@ class Program
                 field[i, j] = new Dimond();
             }
         }
+//new
+        Player player = new Player();
+        Draw(field);
 
-        //filling with Empty
-        field[0, 5] = new Empty();
-        field[3, 14] = new Empty();
-        field[3, 9] = new Empty();
-        field[1, 14] = new Empty();
-        field[3, 10] = new Empty();
-        field[0, 15] = new Empty();
-        field[4, 13] = new Empty();
+        //read input
+        ConsoleKeyInfo KeyValue;
+        KeyValue = Console.ReadKey();
 
-        //Player
-        field[3, 8] = new Player();
-
-        for (int i = 0; i < field.GetLength(0); i++)
+        while (true)
         {
+            if (KeyValue.Key == ConsoleKey.UpArrow) player.Move(field, updatedCoords, 'u');
+            if (KeyValue.Key == ConsoleKey.DownArrow) player.Move(field, updatedCoords, 'd');
+            if (KeyValue.Key == ConsoleKey.LeftArrow) player.Move(field, updatedCoords, 'l');
+            if (KeyValue.Key == ConsoleKey.RightArrow) player.Move(field, updatedCoords, 'r');
+            
+            updatePlayer(field, player, KeyValue);
+            KeyValue = Console.ReadKey();
+
+        }
+    }
+    //renew(update) Player coordinates
+    static void updatePlayer(Parents[,] field, Player player, ConsoleKeyInfo key_pressed)
+    {
+        field[player.X, player.Y] = player;
+         
+        Draw(field);
+    }
+
+    static void Draw(Parents[,] field)
+        {
+        Console.Clear();
+        for (int i = 0; i < field.GetLength(0); i++)
+       {
             for (int j = 0; j < field.GetLength(1); j++)
             {
                 field[i, j].Draw();
             }
             Console.WriteLine();
         }
+        Thread.Sleep(600);
     }
-}
+        
+    } 
+       
