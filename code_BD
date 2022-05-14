@@ -5,7 +5,7 @@ abstract class Parents
 }
 class Player : Parents
 {
-//new
+
     //set Player coordinates
     private int x, y;
     public Player(int x = 2, int y = 6)
@@ -66,7 +66,7 @@ class Dimond : Parents
         Console.Write('D');
     }
 }
-//new
+
 public struct Coords
 {
     public int x, y;
@@ -115,7 +115,7 @@ class Program
                 field[i, j] = new Dimond();
             }
         }
-//new
+
         Player player = new Player();
         Draw(field);
 
