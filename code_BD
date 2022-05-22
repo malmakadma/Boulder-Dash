@@ -1,161 +1,233 @@
+namespace BD
+{
+    abstract class Parent
+    {
+        abstract public void Draw();
+        abstract public char WhatType();
+    }
+    class Player : Parent
+    {
 
-abstract class Parents
-{
-    abstract public void Draw();
-}
-class Player : Parents
-{
-
-    //set Player coordinates
-    private int x, y;
-    public Player(int x = 2, int y = 6)
-    {
-        this.x = x;
-        this.y = y;
-    }
-    public int X
-    {
-        get { return x; }
-        set { x = value; }
-    }
-    public int Y
-    {
-        get { return y;}
-        set { y = value; }
-    }
-    //метод переміщення Player, передаємо словник, у якому зберігається напрямок, змінюємо координати
-    public void Move(Parents[,] field, Dictionary<char, Coords> Coords_upd, char direction)
-    {
-        field[x, y] = new Empty(); //clear the cell after Player
-      
-        this.x = x + Coords_upd[direction].x;
-        this.y = y + Coords_upd[direction].y;
-    }
-   
-    public override void Draw()
-    {
-        Console.Write('I');
-    }
-}
-
-class Sand : Parents
-{
-    public override void Draw()
-    {
-        Console.Write('.');
-    }
-}
-class Empty : Parents
-{
-    public override void Draw()
-    {
-        Console.Write(' ');
-    }
-}
-class Rock : Parents
-{
-    public override void Draw()
-    {
-        Console.Write('o');
-    }
-}
-class Dimond : Parents
-{
-    public override void Draw()
-    {
-        Console.Write('D');
-    }
-}
-
-public struct Coords
-{
-    public int x, y;
-
-    public Coords(int x, int y)
-    {
-        this.x = x;
-        this.y = y;
-    }
-}
-
-class Program
-{
-    static void Main(string[] args)
-    {
-        //Dictionary with directions
-        Dictionary<char, Coords> updatedCoords = new Dictionary<char, Coords>();
-        updatedCoords.Add('u', new Coords(-1, 0));
-        updatedCoords.Add('d', new Coords(1, 0));
-        updatedCoords.Add('r', new Coords(0, 1));
-        updatedCoords.Add('l', new Coords(0, -1));
-        
-        Parents[,] field = new Parents[5, 16];
-
-        //filling with sand
-        for (int i = 0; i < field.GetLength(0); i++)
+        //set Player coordinates
+        private int x, y;
+        private int diamond_count = 0;
+        public Player(int x = 2, int y = 6)
         {
-            for (int j = 0; j < field.GetLength(1); j++)
+            this.x = x;
+            this.y = y;
+        }
+        public int X
+        {
+            get; set;
+        }
+        public int Y
+        {
+            get; set;
+        }
+
+        public int Diamond_count
+        {
+            get => diamond_count;
+        }
+        //метод переміщення Player, передаємо словник, у якому зберігається напрямок, змінюємо координати
+        public void Move(Parent[,] field, Dictionary<char, Coords> Coords_upd, char direction)
+        {
+            field[x, y] = new Empty(); //clear the cell after Player
+
+            this.x = x + Coords_upd[direction].x;
+            this.y = y + Coords_upd[direction].y;
+            if (field[x, y].WhatType() == 'D')
             {
-                field[i, j] = new Sand();
+                diamond_count++;
             }
-        }
-        //filling with Rock
-        for (int i = 1; i < field.GetLength(0) - 1; i++)
-        {
-            field[i+1, 1] = new Rock();
-            field[i, 6] = new Rock();
-            field[i-1, 10] = new Rock();
-        }
-
-        //filling with Dimond
-        for (int i = 0; i < field.GetLength(0); i+= 3)
-        {
-            for (int j = 0; j < field.GetLength(1); j+= 5)
+            else
             {
-                field[i, j] = new Dimond();
+                if (field[x, y].WhatType() == 'o')
+                    field[x + Coords_upd[direction].x, y + Coords_upd[direction].y] = field[x, y];
             }
+
+            field[x, y] = new Player();
         }
 
-        Player player = new Player();
-        Draw(field);
-
-        //read input
-        ConsoleKeyInfo KeyValue;
-        KeyValue = Console.ReadKey();
-
-        while (true)
+        public override void Draw()
         {
-            if (KeyValue.Key == ConsoleKey.UpArrow) player.Move(field, updatedCoords, 'u');
-            if (KeyValue.Key == ConsoleKey.DownArrow) player.Move(field, updatedCoords, 'd');
-            if (KeyValue.Key == ConsoleKey.LeftArrow) player.Move(field, updatedCoords, 'l');
-            if (KeyValue.Key == ConsoleKey.RightArrow) player.Move(field, updatedCoords, 'r');
-            
-            updatePlayer(field, player, KeyValue);
+            Console.Write('I');
+        }
+
+        public override char WhatType()
+        {
+            return 'I';
+        }
+    }
+
+    class Sand : Parent
+    {
+        public override void Draw()
+        {
+            Console.Write('.');
+        }
+        public override char WhatType()
+        {
+            return '.';
+        }
+    }
+    class Empty : Parent
+    {
+        public override void Draw()
+        {
+            Console.Write(' ');
+        }
+        public override char WhatType()
+        {
+            return ' ';
+        }
+    }
+    class Rock : Parent
+    {
+        public override void Draw()
+        {
+            Console.Write('o');
+        }
+        public override char WhatType()
+        {
+            return 'o';
+        }
+        public bool Gravity(Coords curr, Parent[,] field)
+        {
+            if (curr.x + 1 < field.GetLength(0))
+            {
+                while (field[curr.x + 1, curr.y].WhatType() == 'I' || field[curr.x + 1, curr.y].WhatType() == ' ')
+                {
+                    if (field[curr.x + 1, curr.y].WhatType() == 'I')
+                    {
+                        return false;
+                    }
+                    field[curr.x, curr.y] = new Empty();
+                    curr.x += 1;
+                    field[curr.x, curr.y] = new Rock();
+                }
+                return true;
+            }
+            return true;
+        }
+    }
+    class Diamond : Parent
+    {
+        public override void Draw()
+        {
+            Console.Write('D');
+        }
+        public override char WhatType()
+        {
+            return 'D';
+        }
+    }
+
+    public struct Coords
+    {
+        public int x, y;
+
+        public Coords(int x, int y)
+        {
+            this.x = x;
+            this.y = y;
+        }
+    }
+
+    class Program
+    {
+        static bool Draw(Parent[,] field)
+        {
+            Console.Clear();
+            for (int i = 0; i < field.GetLength(0); i++)
+            {
+                for (int j = 0; j < field.GetLength(1); j++)
+                {
+                    if (field[i, j].WhatType() == 'o')
+                    {
+                        Coords t = new Coords(i, j);
+                        Rock t_Rock = (Rock)field[i, j];
+                        if (!t_Rock.Gravity(t, field))
+                        {
+                            return false;
+                        }
+                    }
+                }
+            }
+            for (int i = 0; i < field.GetLength(0); i++)
+            {
+                for (int j = 0; j < field.GetLength(1); j++)
+                {
+                    field[i, j].Draw();
+                }
+                Console.WriteLine();
+            }
+            Thread.Sleep(600);
+            return true;
+        }
+
+        static void Main(string[] args)
+        {
+            //Dictionary with directions
+            Dictionary<char, Coords> updatedCoords = new Dictionary<char, Coords>();
+            updatedCoords.Add('u', new Coords(-1, 0));
+            updatedCoords.Add('d', new Coords(1, 0));
+            updatedCoords.Add('r', new Coords(0, 1));
+            updatedCoords.Add('l', new Coords(0, -1));
+
+            Parent[,] field = new Parent[5, 16];
+
+            //filling with sand
+            for (int i = 0; i < field.GetLength(0); i++)
+            {
+                for (int j = 0; j < field.GetLength(1); j++)
+                {
+                    field[i, j] = new Sand();
+                }
+            }
+            //filling with Rock
+            for (int i = 1; i < field.GetLength(0) - 1; i++)
+            {
+                field[i + 1, 1] = new Rock();
+                field[i, 6] = new Rock();
+                field[i - 1, 10] = new Rock();
+            }
+
+            //filling with Diamond
+            for (int i = 0; i < field.GetLength(0); i += 3)
+            {
+                for (int j = 0; j < field.GetLength(1); j += 5)
+                {
+                    field[i, j] = new Diamond();
+                }
+            }
+
+            Player player = new Player();
+            field[2, 6] = player;
+            Draw(field);
+
+            //read input
+            ConsoleKeyInfo KeyValue;
             KeyValue = Console.ReadKey();
+            bool flag = true;
 
-        }
-    }
-    //renew(update) Player coordinates
-    static void updatePlayer(Parents[,] field, Player player, ConsoleKeyInfo key_pressed)
-    {
-        field[player.X, player.Y] = player;
-         
-        Draw(field);
-    }
-
-    static void Draw(Parents[,] field)
-        {
-        Console.Clear();
-        for (int i = 0; i < field.GetLength(0); i++)
-       {
-            for (int j = 0; j < field.GetLength(1); j++)
+            while (KeyValue.Key != ConsoleKey.Q && flag)
             {
-                field[i, j].Draw();
+                if (KeyValue.Key == ConsoleKey.UpArrow) player.Move(field, updatedCoords, 'u');
+                if (KeyValue.Key == ConsoleKey.DownArrow) player.Move(field, updatedCoords, 'd');
+                if (KeyValue.Key == ConsoleKey.LeftArrow) player.Move(field, updatedCoords, 'l');
+                if (KeyValue.Key == ConsoleKey.RightArrow) player.Move(field, updatedCoords, 'r');
+                if (!Draw(field))
+                {
+                    Console.WriteLine("You lost!");
+                    flag = false;
+                }
+
+                KeyValue = Console.ReadKey();
+
             }
-            Console.WriteLine();
+            Console.WriteLine("Diamonds: {0}", player.Diamond_count);
         }
-        Thread.Sleep(600);
+
     }
-        
-    } 
-       
+}
