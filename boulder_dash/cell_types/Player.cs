@@ -72,7 +72,8 @@ namespace boulder_dash
 
             changed_list.Add(cur_point, this.Path());
             changed_list.Add(pre_point, new Empty().Path());
-            field[pre_point.X][pre_point.Y] = new Empty();//clear the cell after Player
+            //очистити клітинку після Player
+            field[pre_point.X][pre_point.Y] = new Empty();
 
             field[cur_point.X][cur_point.Y] = new Player();
 
