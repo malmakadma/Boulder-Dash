@@ -26,7 +26,7 @@ namespace boulder_dash
             return "Player";
         }
 
-        //метод переміщення Player
+        //method moving Player
         public Point Move(List<List<Cell>> field, Point direction, Point cur_point, Dictionary <Point,string> changed_list)
         {
             if ((cur_point.X + direction.X>= field.Count) || (cur_point.X+direction.X<0))
@@ -72,7 +72,7 @@ namespace boulder_dash
 
             changed_list.Add(cur_point, this.Path());
             changed_list.Add(pre_point, new Empty().Path());
-            //очистити клітинку після Player
+            //clear cell after Player
             field[pre_point.X][pre_point.Y] = new Empty();
 
             field[cur_point.X][cur_point.Y] = new Player();
