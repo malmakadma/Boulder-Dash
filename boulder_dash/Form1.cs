@@ -24,7 +24,6 @@ namespace boulder_dash
         public Menu()
         {
             InitializeComponent();
-            //Cursor.Hide();
             Start_screen();
 
         }
@@ -33,7 +32,7 @@ namespace boulder_dash
         {
             highscores = new List<KeyValuePair<int, string>>();
             formatter = new BinaryFormatter();
-            for (int i=1; i<6; i++)
+            for (int i = 1; i < 6; i++)
             {
                 list_levels.Items.Add("level " + i.ToString());
             }
