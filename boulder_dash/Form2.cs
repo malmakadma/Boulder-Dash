@@ -35,28 +35,24 @@ namespace boulder_dash
 
         void draw_field()
         {
-            //
-            //
-            //CHANGE FORM SIZE!!!!!!
-            //
-            //
-            this.Width = 800; //850
-            this.Height = 620;//650
+            
+            //form size
+            this.Width = 800; 
+            this.Height = 620;
             game_field = new List<List<Label>>();
-            for (int i=0; i<field.Width; i++)
+            for (int i = 0; i < field.Width; i++)
             {
                 game_field.Add(new List<Label>());
                 for (int j = 0; j < field.Height; j++)
                 {
                     Label tmp = new Label()
                     {
-                        Location = new Point( 5+ i * 30, 40 + j * 30),
+                        Location = new Point( 5 + i * 30, 40 + j * 30),
                         AutoSize = false,
                         Width = 30,
                         Height = 30,
                         BorderStyle = BorderStyle.None,
-                        
-                        //Text = field.Get_field[i][j].Type()     
+                          
                         Image = (Bitmap)Resource1.ResourceManager.GetObject(field.Get_field[i][j].Path())
                     };
 
@@ -104,8 +100,7 @@ namespace boulder_dash
                 this.Close();
                 return;
             }
-            //MessageBox.Show($"{player.getx()}, {player.gety()}");
-
+            
         }
 
     }
