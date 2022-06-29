@@ -23,12 +23,12 @@ namespace boulder_dash
         {
             int x = coords.X;
             int y = coords.Y;
-            if (y+1 >= field[0].Count)
+            if (y + 1 >= field[0].Count)
             {
                 return false;
             }
             bool moving = false;
-            while (y+1<field[0].Count && (field[x][y + 1].Type() == " " || field[x][y + 1].Type() == "I"))
+            while (y + 1 < field[0].Count && (field[x][y + 1].Type() == " " || field[x][y + 1].Type() == "I"))
             {
                 if (field[x][y + 1].Type() == " " || field[x][y+1].Type()=="I")
                 {
@@ -70,13 +70,13 @@ namespace boulder_dash
                     {
                         changed_list.Add(new Point(x, y), new Empty().Path());
                     }
-                    if (changed_list.ContainsKey(new Point(x, y+1)))
+                    if (changed_list.ContainsKey(new Point(x, y + 1)))
                     {
-                        changed_list[new Point(x, y+1)] = new Rock().Path();
+                        changed_list[new Point(x, y + 1)] = new Rock().Path();
                     }
                     else
                     {
-                        changed_list.Add(new Point(x, y+1), new Rock().Path());
+                        changed_list.Add(new Point(x, y + 1), new Rock().Path());
                     }
                     field[x][y] = new Empty();
                     field[x][y + 1] = new Rock();
