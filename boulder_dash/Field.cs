@@ -123,9 +123,9 @@ namespace boulder_dash
         public Dictionary<Point, string> General_gravity()
         {
             Dictionary<Point, string> changed_list = new Dictionary<Point, string>();
-            for (int i=width-1; i>=0; i--)
+            for (int i = width - 1; i >= 0; i--)
             {
-                for (int j=height-2; j>=0; j--)
+                for (int j = height - 2; j >= 0; j--)
                 {
                     if (field[i][j].Type()=="o")
                     {
