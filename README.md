@@ -1,6 +1,6 @@
 # Boulder-Dash
 
-<h1 align = "center"> Game: Boulder dash <h1/>
+<h1 align = "center" color = Blue> Game: Boulder dash <h1/>
 
 <h3> <a href = "https://youtu.be/wdbhtFekeRA">demo version<a/> <h3/>
 
