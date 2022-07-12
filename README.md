@@ -11,9 +11,14 @@
 
   <h3>Controls<h3/>
    <h5>
-   Enter - choose level /n
+   Enter - choose level
+     <br><br/>
    Q - quit the game
+      <br><br/>
    button up - move up
+      <br><br/>
    button down - move down
+      <br><br/>
    button right - move right
+      <br><br/>
    button left - move left <h5/>
