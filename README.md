@@ -1,6 +1,6 @@
 # Boulder-Dash
 
-<h1 align = "center" style = "color: blue"> Game: Boulder dash <h1/>
+<h1 align = "center"> Game: Boulder dash <h1/>
 
 <h3> <a href = "https://youtu.be/wdbhtFekeRA">demo version<a/> <h3/>
 
@@ -9,7 +9,7 @@
 
 <h5>Rockford can dig through the ground and push rocks. But these can also be dangerous. If he stands directly below a rock, Rockford can hold it on his head. But if a rock falls on his head, it will cost him a life. So the game is over. Rocks will not stay on each other or on walls. If Rockford digs away the supporting soil, rocks will start to slide. <h5/>
 
-  <h3>Controls<h3/>
+  <h3 style = "color: blue">Controls<h3/>
    <h5>
    Enter - choose level
      <br><br/>
