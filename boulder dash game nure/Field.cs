@@ -66,10 +66,10 @@ namespace boulder_dash
             {
                 if (new FileInfo(lvl).Length != 0)
                 {
-                    using (StreamReader fs = new StreamReader(lvl))
+                    using (StreamReader streamReader = new StreamReader(lvl))
                     {
                         string line;
-                        while ((line = fs.ReadLine())!= null) {
+                        while ((line = streamReader.ReadLine())!= null) {
                             lvlField.Add(line);
                         }
                     }
