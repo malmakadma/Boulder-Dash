@@ -45,10 +45,10 @@ namespace boulder_dash
             {
                 if (new FileInfo("highscore_list.txt").Length != 0)
                 {
-                    using (StreamReader fs = new StreamReader("highscore_list.txt"))
+                    using (StreamReader streamReader = new StreamReader("highscore_list.txt"))
                     {
                         string line;
-                        while ((line = fs.ReadLine()) != null)
+                        while ((line = streamReader.ReadLine()) != null)
                         {
                             highscores.Add(new KeyValuePair<int, string>(int.Parse(line.Split()[1]),line.Split()[0]));
                         }
@@ -87,11 +87,11 @@ namespace boulder_dash
             }
 
             //update file
-            using (StreamWriter fs = new StreamWriter("highscore_list.txt", false))
+            using (StreamWriter streamWriter = new StreamWriter("highscore_list.txt", false))
             {
                 foreach (var h in highscores)
                 {
-                    fs.WriteLine(h.Value + " " + h.Key.ToString());
+                    streamWriter.WriteLine(h.Value + " " + h.Key.ToString());
                 }
             }
 
